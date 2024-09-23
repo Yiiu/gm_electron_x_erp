@@ -1,0 +1,24 @@
+image: Visual Studio 2022
+
+platform:
+  - x86
+
+cache:
+  - node_modules
+  - '%USERPROFILE%\.electron'
+
+init:
+  - git config --global core.autocrlf input
+
+install:
+  - ps: Install-Product node 18 x86
+  - yarn
+
+build_script:
+  - yarn dist
+
+artifacts:
+  - path: dist\*.exe
+
+test: off
+
