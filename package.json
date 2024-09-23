@@ -1,0 +1,49 @@
+{
+  "name": "gm-electron-erp",
+  "version": "1.0.0",
+  "description": "观麦数字化管理系统",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "postinstall": "electron-builder install-app-deps",
+    "dist": "electron-builder --win"
+  },
+  "author": "深圳市观麦网络科技有限公司",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^11.0.0",
+    "electron-builder": "^22.11.7",
+    "prettier": "^2.4.1"
+  },
+  "dependencies": {
+    "electron-updater": "^4.3.9",
+    "serialport": "^9.2.1"
+  },
+  "build": {
+    "appId": "cn.guanmai.x.erp",
+    "productName": "观麦数字化管理系统",
+    "copyright": "Copyright © 2020 gm",
+    "directories": {
+      "output": "dist"
+    },
+    "publish": {
+      "provider": "generic",
+      "url": "https://js.guanmai.cn/v2/static/file/erp/"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "icon/icon.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  }
+}
