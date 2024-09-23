@@ -1,7 +1,7 @@
 image: Visual Studio 2022
 
 platform:
-  - x86
+  - x64
 
 cache:
   - node_modules
@@ -11,7 +11,7 @@ init:
   - git config --global core.autocrlf input
 
 install:
-  - ps: Install-Product node 18 x86
+  - ps: Install-Product node 18 x64
   - yarn
 
 build_script:
@@ -21,4 +21,3 @@ artifacts:
   - path: dist\*.exe
 
 test: off
-
