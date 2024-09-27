@@ -11,13 +11,13 @@
   "author": "深圳市观麦网络科技有限公司",
   "license": "ISC",
   "devDependencies": {
-    "electron": "^11.0.0",
-    "electron-builder": "^22.11.7",
-    "prettier": "^2.4.1"
+    "electron": "^22.3.27",
+    "electron-builder": "^24.7.0",
+    "prettier": "^3.3.3"
   },
   "dependencies": {
-    "electron-updater": "^4.3.9",
-    "serialport": "^9.2.1"
+    "electron-updater": "^6.3.4",
+    "serialport": "^12.0.0"
   },
   "build": {
     "appId": "cn.guanmai.x.erp",
