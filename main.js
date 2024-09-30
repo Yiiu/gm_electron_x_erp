@@ -8,6 +8,7 @@ const {
 } = require('./dev_config')
 const handleUpdate = require('./src/main/app_update')
 const { appEvent } = require('./src/event')
+const path = require('path')
 
 let mainWindow = null
 let printerWindow = null
@@ -21,6 +22,8 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true,
+      webviewTag: true,
+      preload: path.join(__dirname, 'preload.js'),
     },
   })
   mainWindow.focus()
@@ -30,6 +33,9 @@ function createWindow() {
   if (isOpenDevTools) {
     mainWindow.webContents.openDevTools()
   }
+  mainWindow.webContents.setWindowOpenHandler((details) => {
+    mainWindow.loadURL(details.url)
+  })
 
   mainWindow.on('closed', function () {
     mainWindow = null
@@ -50,6 +56,7 @@ function createPrinterWindow(url) {
     webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true,
+      preload: path.join(__dirname, 'preload.js'),
     },
   })
 
@@ -70,7 +77,7 @@ app.whenReady().then(() => {
   Menu.setApplicationMenu(null)
 
   createWindow()
-  // createPrinterWindow()
+  createPrinterWindow()
   handleUpdate(sendUpdateMessage)
 })
 
@@ -95,11 +102,46 @@ app.on('activate', () => {
 
 // 接受渲染进程对 print 事件
 ipcMain.handle('print', (event, payload) => {
-  // 像打印窗口发送 print 事件
-  printerWindow.webContents.send('print', payload)
-  // return payload
+  return new Promise((resolve, reject) => {
+    printerWindow.webContents.print(
+      {
+        silent: true,
+        ...payload,
+      },
+      (success, failureReason) => {
+        if (!success) {
+          // 把错误信息发送到主进程
+          mainWindow.webContents.send('print-error', failureReason)
+          reject(failureReason)
+        } else {
+          mainWindow.webContents.send('print-success')
+          resolve(success)
+        }
+      },
+    )
+  })
 })
 
 ipcMain.handle('openPrintWindow', (event, payload) => {
   createPrinterWindow(payload)
+})
+
+// 获取打印机列表
+ipcMain.handle('getPrintList', async (event, isShowMessage) => {
+  try {
+    return await mainWindow.webContents.getPrintersAsync()
+  } catch (error) {
+    console.log('error', error)
+  }
+})
+
+// 修改打印窗口的url
+ipcMain.handle('setPrintUrl', async (event, data) => {
+  return printerWindow.loadURL(data.url)
+})
+
+// 打印进程错误
+ipcMain.handle('print-error', (event, data) => {
+  // 返回给主渲染进程显示错误信息
+  mainWindow.webContents.send('print-error', data)
 })
