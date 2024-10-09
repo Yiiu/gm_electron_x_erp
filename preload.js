@@ -1,7 +1,11 @@
-const { contextBridge, ipcRenderer } = require('electron')
+const { contextBridge, ipcRenderer, app } = require('electron')
+const path = require('path')
 
-
+/**
+ * electron 预加载脚本
+ */
 contextBridge.exposeInMainWorld('electron', {
+  webviewPreload: `file://${__dirname}/webviewPreload.js`,
   invoke: (channel, args) => {
     return ipcRenderer.invoke(channel, args)
   },

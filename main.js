@@ -106,7 +106,12 @@ ipcMain.handle('print', (event, payload) => {
     printerWindow.webContents.print(
       {
         silent: true,
+        printBackground: true,
         ...payload,
+        pageSize: {
+          width: payload.pageSize.width * 1000,
+          height: payload.pageSize.height * 1000,
+        }
       },
       (success, failureReason) => {
         if (!success) {
