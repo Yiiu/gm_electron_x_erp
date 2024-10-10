@@ -11,7 +11,7 @@
   "author": "深圳市观麦网络科技有限公司",
   "license": "ISC",
   "devDependencies": {
-    "electron": "22.3.27",
+    "electron": "21.4.4",
     "electron-builder": "^24.7.0",
     "prettier": "^3.3.3"
   },

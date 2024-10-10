@@ -103,6 +103,7 @@ app.on('activate', () => {
 // 接受渲染进程对 print 事件
 ipcMain.handle('print', (event, payload) => {
   return new Promise((resolve, reject) => {
+    console.log(payload)
     printerWindow.webContents.print(
       {
         silent: true,
@@ -111,7 +112,7 @@ ipcMain.handle('print', (event, payload) => {
         pageSize: {
           width: payload.pageSize.width * 1000,
           height: payload.pageSize.height * 1000,
-        }
+        },
       },
       (success, failureReason) => {
         if (!success) {
