@@ -122,6 +122,7 @@ ipcMain.handle('print', (event, payload) => {
           mainWindow.webContents.send('print-success')
           resolve(success)
         }
+        printerWindow.loadURL(printLoadURL)
       },
     )
   })
