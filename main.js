@@ -33,9 +33,9 @@ function createWindow() {
   if (isOpenDevTools) {
     mainWindow.webContents.openDevTools()
   }
-  mainWindow.webContents.setWindowOpenHandler((details) => {
-    mainWindow.loadURL(details.url)
-  })
+  // mainWindow.webContents.setWindowOpenHandler((details) => {
+  //   mainWindow.loadURL(details.url)
+  // })
 
   mainWindow.on('closed', function () {
     mainWindow = null
