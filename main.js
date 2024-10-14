@@ -103,7 +103,6 @@ app.on('activate', () => {
 // 接受渲染进程对 print 事件
 ipcMain.handle('print', (event, payload) => {
   return new Promise((resolve, reject) => {
-    console.log(payload)
     printerWindow.webContents.print(
       {
         silent: true,
