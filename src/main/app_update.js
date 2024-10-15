@@ -12,7 +12,7 @@ function handleUpdate(dispatchUpdateMsg = () => {}) {
     downloading: { status: 4, msg: '正在下载' },
   }
 
-  autoUpdater.setFeedURL('https://js.guanmai.cn/v2/static/file/mes/')
+  autoUpdater.setFeedURL('https://js.guanmai.cn/v2/static/file/erp/')
 
   autoUpdater.on('error', (e) => {
     dispatchUpdateMsg(update_msg.error)
