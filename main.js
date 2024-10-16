@@ -33,9 +33,22 @@ function createWindow() {
   if (isOpenDevTools) {
     mainWindow.webContents.openDevTools()
   }
-  // mainWindow.webContents.setWindowOpenHandler((details) => {
-  //   mainWindow.loadURL(details.url)
-  // })
+  mainWindow.webContents.setWindowOpenHandler((details) => {
+    return {
+      action: 'allow',
+      overrideBrowserWindowOptions: {
+        width: 800,
+        height: 600,
+        center: true,
+        webPreferences: {
+          nodeIntegration: true,
+          enableRemoteModule: true,
+          webviewTag: true,
+          preload: path.join(__dirname, 'preload.js'),
+        },
+      }
+    }
+  })
 
   mainWindow.on('closed', function () {
     mainWindow = null
@@ -114,12 +127,20 @@ ipcMain.handle('print', (event, payload) => {
         },
       },
       (success, failureReason) => {
+        const allWindow =
+          BrowserWindow.getAllWindows()
+
         if (!success) {
-          // 把错误信息发送到主进程
-          mainWindow.webContents.send('print-error', failureReason)
+          // 把错误信息发送到所有窗口
+          allWindow.forEach((window) => {
+            window.webContents.send('print-error', failureReason)
+          })
           reject(failureReason)
         } else {
-          mainWindow.webContents.send('print-success')
+          // 发送给所有窗口
+          allWindow.forEach((window) => {
+            window.webContents.send('print-success')
+          })
           resolve(success)
         }
         printerWindow.loadURL(printLoadURL)
@@ -148,6 +169,10 @@ ipcMain.handle('setPrintUrl', async (event, data) => {
 
 // 打印进程错误
 ipcMain.handle('print-error', (event, data) => {
-  // 返回给主渲染进程显示错误信息
-  mainWindow.webContents.send('print-error', data)
+  const allWindow =
+    BrowserWindow.getAllWindows()
+  // 返回给所有窗口显示错误信息
+  allWindow.forEach((window) => {
+    window.webContents.send('print-error', data)
+  })
 })
