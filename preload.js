@@ -1,5 +1,6 @@
 const { contextBridge, ipcRenderer, app } = require('electron')
-const path = require('path')
+
+const { getPaperSizeInfo, getPaperSizeInfoAll } = require("win32-pdf-printer");
 
 /**
  * electron 预加载脚本
@@ -8,6 +9,17 @@ contextBridge.exposeInMainWorld('electron', {
   webviewPreload: `file://${__dirname}/webviewPreload.js`,
   invoke: (channel, args) => {
     return ipcRenderer.invoke(channel, args)
+  },
+  // 获取打印机尺寸
+  getPaperSizeInfo(printer) {
+    if (process.platform === 'win32') {
+      return getPaperSizeInfo({ printer })
+    }
+  },
+  getPaperSizeInfoAll: () => {
+    if (process.platform === 'win32') {
+      return getPaperSizeInfoAll()
+    }
   },
   // 打印错误
   onPrintError: (callback) => {

@@ -1880,6 +1880,11 @@ which@^2.0.1:
   dependencies:
     isexe "^2.0.0"
 
+win32-pdf-printer@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.npmjs.org/win32-pdf-printer/-/win32-pdf-printer-5.0.0.tgz#271c1b87c7fc46f11d8e50f32e01e6f7763fc418"
+  integrity sha512-CwDgYgBug9yaepYAQmHBb22zuZHWiTu+jkpCvao1yxNTL+MVpQ9Bcf9yTE7n6SfK2+gquGHypimROalmJqhDUQ==
+
 "wrap-ansi-cjs@npm:wrap-ansi@^7.0.0":
   version "7.0.0"
   resolved "https://registry.npmjs.org/wrap-ansi/-/wrap-ansi-7.0.0.tgz#67e145cff510a6a6984bdf1152911d69d2eb9e43"
